@@ -1,0 +1,2 @@
+defmodule Nibbler do
+end
