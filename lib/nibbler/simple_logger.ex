@@ -57,10 +57,15 @@ defmodule Nibbler.SimpleLogger do
             rst, syn, fin, _, _, _, _, _}|rest], acc) do
     flags = Enum.filter([{:cwr, cwr}, {:ece, ece}, {:urg, urg}, {:ack, ack},
                    {:psh, psh}, {:rst, rst}, {:syn, syn}, {:fin, fin}],
-                   fn({f,v}) -> v == 1 end)
+                   fn({_,v}) -> v == 1 end)
       |> Keyword.keys
     header(rest, [{:tcp, [{:source_port, sport}, {:destination_port, dport},
                     {:flags, flags}, {:seq, seqno}, {:ack, ackno}, {:win, win}]}|acc])
+  end
+
+  def header([{:udp, sport, dport, ulen, _}|rest], acc) do
+    header(rest, [{:udp, [{:source_port, sport}, {:destination_port, dport},
+                    {:ulen, ulen}]}|acc])
   end
 
   def header([hdr|rest], acc) when is_tuple(hdr),
