@@ -8,7 +8,7 @@ defmodule Nibbler.SimpleLogger do
   def init(opts),
   do: :epcap.start_link(opts)
 
-  def handle_info({_packet, dlt, time, len, data}, state) do
+  def handle_info({_packet, dlt, time, len, data}, _) do
     headers = decode(dlt, data) |> header
     Logger.info(inspect [
       {"pcap", [
@@ -18,7 +18,7 @@ defmodule Nibbler.SimpleLogger do
         {"datalink", :pkt.dlt(dlt)}
       ]}
     ] ++ headers)
-    state
+    {:noreply, "sniffing"}
   end
 
   # Internal functions
