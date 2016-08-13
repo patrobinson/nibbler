@@ -3,7 +3,7 @@ defmodule Nibbler.SimpleLogger do
   require Logger
 
   def start_link(opts \\ []),
-  do: GenServer.start_link(__MODULE__, :ok, opts)
+  do: GenServer.start_link(__MODULE__, opts)
 
   def init(opts),
   do: :epcap.start_link(opts)
