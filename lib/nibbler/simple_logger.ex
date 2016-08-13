@@ -23,7 +23,7 @@ defmodule Nibbler.SimpleLogger do
   def header([], acc),
   do: Enum.reverse(acc)
 
-  def header([{:ether, shost = shost, dhost = dhost}|rest], acc) do
+  def header([{:ether, shost, dhost, _, _}|rest], acc) do
     rest
     |> header(
       [
