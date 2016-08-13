@@ -46,6 +46,12 @@ defmodule Nibbler.SimpleLogger do
     )
   end
 
+  def header([{:ipv4, _, _, _, _, _, _, _, _, _, proto, _, daddr, saddr, _}|rest], acc) do
+    header(rest, [{:ipv4, [{:protocol, :pkt.proto(proto)},
+                    {:source_address, :inet_parse.ntoa(saddr)},
+                    {:destination_address, :inet_parse.ntoa(daddr)}]}|acc])
+  end
+
   def header([hdr|rest], acc) when is_tuple(hdr),
   do: header(rest, [{:header, hdr}|acc])
 
