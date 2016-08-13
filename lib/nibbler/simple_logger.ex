@@ -59,4 +59,9 @@ defmodule Nibbler.SimpleLogger do
     hex_list |> Enum.join(":")
   end
 
+  def timestamp(now) do
+    {{year, month, day}, {hour, minute, second}} = :calendar.now_to_local_time(now)
+    {:ok, ntime} = NaiveDateTime.new(year, month, day, hour, minute, second)
+    NaiveDateTime.to_iso8601(ntime)
+  end
 end
