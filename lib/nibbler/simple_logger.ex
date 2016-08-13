@@ -68,6 +68,14 @@ defmodule Nibbler.SimpleLogger do
                     {:ulen, ulen}]}|acc])
   end
 
+  def header([{:icmp, type, code, _, _, _, _, _, _, _, _, _, _}|rest], acc) do
+    header(rest, [{:icmp, [{:type, type}, {:code, code}]}|acc])
+  end
+
+  def header([{:icmp6, type, code, _, _, _, _, _, _, _, _, _, _}|rest], acc) do
+    header(rest, [{:icmp6, [{:type, type}, {:code, code}]}|acc])
+  end
+
   def header([hdr|rest], acc) when is_tuple(hdr),
   do: header(rest, [{:header, hdr}|acc])
 
