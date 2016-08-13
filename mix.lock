@@ -1,2 +1,2 @@
-%{"epcap": {:git, "https://github.com/msantos/epcap.git", "ea6b84688c60de42672afb56d879d8d94d6f4f85", [tag: "0.7.9"]},
-  "pkt": {:git, "https://github.com/msantos/pkt.git", "6ae07de46a24e5b0fe76948981979580da8348ef", [ref: "master"]}}
+%{"epcap": {:git, "https://github.com/msantos/epcap.git", "eb9206f9b01deeee6397f90470a28f7fa1ad34e6", []},
+  "pkt": {:git, "https://github.com/msantos/pkt.git", "6ae07de46a24e5b0fe76948981979580da8348ef", [branch: "master"]}}

@@ -18,6 +18,6 @@ defmodule Nibbler.Mixfile do
   end
 
   defp deps do
-    [{:epcap, github: "msantos/epcap", tag: "0.7.9"}]
+    [{:epcap, github: "msantos/epcap"}]
   end
 end

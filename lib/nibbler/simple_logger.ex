@@ -6,7 +6,7 @@ defmodule Nibbler.SimpleLogger do
   do: GenServer.start_link(__MODULE__, :ok, opts)
 
   def init(opts),
-  do: :epcap.start(opts)
+  do: :epcap.start_link(opts)
 
   def handle_info({packet, dlt, _time, _len, data}, _) do
     headers = decode(dlt, data) |> header
