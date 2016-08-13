@@ -1,5 +1,6 @@
-defmodule Nibbler.SimplePcap do
+defmodule Nibbler.SimpleLogger do
   use GenServer
+  require Logger
 
   def start_link(opts \\ []),
   do: GenServer.start_link(__MODULE__, :ok, opts)
