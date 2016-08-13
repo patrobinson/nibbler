@@ -52,6 +52,17 @@ defmodule Nibbler.SimpleLogger do
                     {:destination_address, :inet_parse.ntoa(daddr)}]}|acc])
   end
 
+  def header([{:tcp, dport, sport, ackno, seqno,
+            win, cwr, ece, urg, ack, psh,
+            rst, syn, fin, _, _, _, _, _}|rest], acc) do
+    flags = Enum.filter([{:cwr, cwr}, {:ece, ece}, {:urg, urg}, {:ack, ack},
+                   {:psh, psh}, {:rst, rst}, {:syn, syn}, {:fin, fin}],
+                   fn({f,v}) -> v == 1 end)
+      |> Keyword.keys
+    header(rest, [{:tcp, [{:source_port, sport}, {:destination_port, dport},
+                    {:flags, flags}, {:seq, seqno}, {:ack, ackno}, {:win, win}]}|acc])
+  end
+
   def header([hdr|rest], acc) when is_tuple(hdr),
   do: header(rest, [{:header, hdr}|acc])
 
