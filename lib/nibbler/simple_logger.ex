@@ -37,7 +37,9 @@ defmodule Nibbler.SimpleLogger do
     )
   end
 
-  def ether_addr(mac),
-  do: Base.encode16(mac) |> Enum.join(":")
+  def ether_addr(mac) do
+    hex_list = for <<n <- mac>>, do: Base.encode16(<<n>>)
+    hex_list |> Enum.join(":")
+  end
 
 end
