@@ -10,12 +10,12 @@ defmodule Nibbler.SimpleLogger do
 
   def handle_info({_packet, dlt, time, len, data}, state) do
     headers = decode(dlt, data) |> header
-    Logger.info([
-      {:pcap, [
-        {:time, timestamp(time)},
-        {:caplen, byte_size(data)},
-        {:len, len},
-        {:datalink, :pkt.dlt(dlt)}
+    Logger.info(inspect [
+      {"pcap", [
+        {"time", timestamp(time)},
+        {"caplen", byte_size(data)},
+        {"len", len},
+        {"datalink", :pkt.dlt(dlt)}
       ]}
     ] ++ headers)
     state
