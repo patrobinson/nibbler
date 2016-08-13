@@ -46,6 +46,14 @@ defmodule Nibbler.SimpleLogger do
     )
   end
 
+  def header([hdr|rest], acc) when is_tuple(hdr),
+  do: header(rest, [{:header, hdr}|acc])
+
+  def header([payload|rest], acc) when is_binary(payload) do
+    header(rest, [{:payload, payload},
+            {:payload_size, byte_size(payload)}|acc])
+  end
+
   def ether_addr(mac) do
     hex_list = for <<n <- mac>>, do: Base.encode16(<<n>>)
     hex_list |> Enum.join(":")
