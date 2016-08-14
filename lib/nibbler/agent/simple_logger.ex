@@ -1,4 +1,4 @@
-defmodule Nibbler.SimpleLogger do
+defmodule Nibbler.Agent.SimpleLogger do
   use GenServer
   require Logger
 
