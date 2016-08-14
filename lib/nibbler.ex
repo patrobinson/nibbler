@@ -31,11 +31,14 @@ defmodule Nibbler do
     ]
     opts = [strategy: :one_for_one, name: Nibbler.Master.Supervisor]
     {:ok, sup_pid} = Supervisor.start_link(children, opts)
+    Process.sleep(5000)
     capture_arguments = [{"interface", ["en0"]}] # Example
     for node <- Discovery.nodes(node_pattern) do
       Task.Supervisor.async(
         {Nibbler.Agent.TaskSupervisor, node},
-        fn -> Nibbler.Agent.SimpleLogger.start_link(capture_arguments) end
+        Nibbler.Agent.SimpleLogger,
+        :start_link,
+        [capture_arguments]
       )
     end
     {:ok, sup_pid}
