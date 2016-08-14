@@ -10,26 +10,34 @@ defmodule Nibbler do
   def start(:agent) do
     import Supervisor.Spec, warn: false
 
+    Task.Supervisor.start_link(name: Nibbler.Agent.TaskSupervisor)
+
     heartbeat_check = Application.get_env(:nibbler, :heartbeat_check)
     heartbeat_ttl = Application.get_env(:nibbler, :heartbeat_ttl)
     children = [
       worker(Discovery.Heartbeat, [heartbeat_check, heartbeat_ttl])
     ]
 
-    opts = [strategy: :one_for_one, name: Nibbler.Supervisor]
+    opts = [strategy: :one_for_one, name: Nibbler.Agent.Supervisor]
     Supervisor.start_link(children, opts)
   end
 
   def start(:master) do
-    {:ok, sup_pid} = Task.Supervisor.start_link(name: :task_supervisor)
-    node_pattern = Application.get_env(:nibbler, :heartbeat_check)
+    import Supervisor.Spec, warn: false
+
+    node_pattern = Application.get_env(:nibbler, :heartbeat_check) |> String.split(":") |> List.last
+    children = [
+      worker(Discovery.Poller, [node_pattern, Discovery.Handler.NodeConnect], id: Nibbler.Master.MyPoller),
+    ]
+    opts = [strategy: :one_for_one, name: Nibbler.Master.Supervisor]
+    {:ok, sup_pid} = Supervisor.start_link(children, opts)
     capture_arguments = [{"interface", ["en0"]}] # Example
-    Discovery.select(node_pattern, "", fn
-      {:ok, _} ->
-        Task.Supervisor.start_child(:task_supervisor, Nibbler.Agent.SimpleLogger, :start_link, [capture_arguments])
-      {:error, {:no_servers, _}} ->
-        Logger.info "No hosts found"
-    end)
+    for node <- Discovery.nodes(node_pattern) do
+      Task.Supervisor.async(
+        {Nibbler.Agent.TaskSupervisor, node},
+        fn -> Nibbler.Agent.SimpleLogger.start_link(capture_arguments) end
+      )
+    end
     {:ok, sup_pid}
   end
 end
