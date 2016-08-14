@@ -1,6 +1,18 @@
 # Nibbler
 
-**TODO: Add description**
+## Using Consul
+
+Nibbler uses Consul for auto-discovery of agents. In order for agents to register their availability with Consul you need to configure a default TTL. For example:
+
+```
+curl localhost:8500/v1/agent/check/register -X PUT -d '
+{
+  "name": "service:nibbler_agent",
+  "ttl": "15s"
+}'
+```
+
+Where `service:nibbler_agent` is the heartbeat_check variable defined in the config.
 
 ## Installation
 

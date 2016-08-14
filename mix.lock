@@ -1,2 +1,14 @@
-%{"epcap": {:git, "https://github.com/msantos/epcap.git", "eb9206f9b01deeee6397f90470a28f7fa1ad34e6", []},
-  "pkt": {:git, "https://github.com/msantos/pkt.git", "6ae07de46a24e5b0fe76948981979580da8348ef", [branch: "master"]}}
+%{"certifi": {:hex, :certifi, "0.4.0"},
+  "consul": {:hex, :consul, "1.0.3"},
+  "discovery": {:hex, :discovery, "0.5.7"},
+  "epcap": {:git, "https://github.com/msantos/epcap.git", "eb9206f9b01deeee6397f90470a28f7fa1ad34e6", []},
+  "exjsx": {:hex, :exjsx, "3.2.0"},
+  "hackney": {:hex, :hackney, "1.6.1"},
+  "hash_ring_ex": {:hex, :hash_ring_ex, "1.1.2"},
+  "httpoison": {:hex, :httpoison, "0.6.2"},
+  "idna": {:hex, :idna, "1.2.0"},
+  "jsx": {:hex, :jsx, "2.6.2"},
+  "metrics": {:hex, :metrics, "1.0.1"},
+  "mimerl": {:hex, :mimerl, "1.0.2"},
+  "pkt": {:git, "https://github.com/msantos/pkt.git", "6ae07de46a24e5b0fe76948981979580da8348ef", [branch: "master"]},
+  "ssl_verify_fun": {:hex, :ssl_verify_fun, "1.1.0"}}

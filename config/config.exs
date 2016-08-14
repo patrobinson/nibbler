@@ -20,6 +20,9 @@ use Mix.Config
 #
 #     config :logger, level: :info
 #
+config :nibbler, mode: :agent
+config :nibbler, heartbeat_check: "service:nibbler_agent"
+config :nibbler, heartbeat_ttl: 10000
 
 # It is also possible to import configuration files, relative to this
 # directory. For example, you can emulate configuration per environment

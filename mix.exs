@@ -13,11 +13,14 @@ defmodule Nibbler.Mixfile do
   def application do
     [
       mod: {Nibbler, []},
-      applications: [:logger, :epcap]
+      applications: [:logger, :epcap, :discovery]
     ]
   end
 
   defp deps do
-    [{:epcap, github: "msantos/epcap"}]
+    [
+      {:epcap, github: "msantos/epcap"},
+      {:discovery, "~> 0.5.0"}
+    ]
   end
 end
