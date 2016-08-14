@@ -2,13 +2,18 @@
 
 ## Using Consul
 
-Nibbler uses Consul for auto-discovery of agents. In order for agents to register their availability with Consul you need to configure a default TTL. For example:
+Nibbler uses Consul for auto-discovery of agents. In order for agents to register their availability with Consul you need to configure a service. For example:
 
 ```
-curl localhost:8500/v1/agent/check/register -X PUT -d '
+curl localhost:8500/v1/agent/service/register -X PUT -d '
 {
-  "name": "service:nibbler_agent",
-  "ttl": "15s"
+  "name": "nibbler_agent",
+  "check": {
+    "ttl": "15s"
+  },
+  "tags": [
+    "otp_name:nibbler_agent@laptop"
+  ]
 }'
 ```
 
