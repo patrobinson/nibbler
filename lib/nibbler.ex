@@ -3,6 +3,7 @@ defmodule Nibbler do
   require Logger
 
   def start(_type, _args) do
+    Application.get_env(:nibbler, :cookie) |> Node.set_cookie
     Application.get_env(:nibbler, :mode) |> start
   end
 
