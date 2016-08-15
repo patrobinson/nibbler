@@ -21,6 +21,7 @@ use Mix.Config
 #     config :logger, level: :info
 #
 config :nibbler, mode: :agent
+config :nibbler, agent_command: Nibbler.Agent.SimpleLogger
 config :nibbler, heartbeat_check: "service:nibbler_agent"
 config :nibbler, heartbeat_ttl: 10000
 

@@ -1,14 +1,13 @@
 defmodule Nibbler.Agent.SimpleLogger do
-  use GenServer
   require Logger
 
-  def start_link(opts \\ []),
-  do: GenServer.start_link(__MODULE__, opts)
+  def with_stream(stream) do
+    for event <- stream do
+      log_packet(event)
+    end
+  end
 
-  def init(opts),
-  do: :epcap.start_link(opts)
-
-  def handle_info({_packet, dlt, time, len, data}, _) do
+  def log_packet({:packet, dlt, time, len, data}) do
     headers = decode(dlt, data) |> header
     Logger.info(inspect [
       {"pcap", [
@@ -18,10 +17,10 @@ defmodule Nibbler.Agent.SimpleLogger do
         {"datalink", :pkt.dlt(dlt)}
       ]}
     ] ++ headers)
-    {:noreply, "sniffing"}
   end
 
   # Internal functions
+  # Taken from https://github.com/msantos/epcap/blob/master/examples/sniff.erl
 
   def decode(dlt, data),
   do: :pkt.decapsulate({:pkt.dlt(dlt), data})

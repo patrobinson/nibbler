@@ -26,6 +26,7 @@ defmodule Nibbler do
     import Supervisor.Spec, warn: false
 
     node_pattern = Application.get_env(:nibbler, :heartbeat_check) |> String.split(":") |> List.last
+    agent_command = Application.get_env(:nibbler, :agent_command)
     children = [
       worker(Discovery.Poller, [node_pattern, Discovery.Handler.NodeConnect], id: Nibbler.Master.MyPoller),
     ]
@@ -36,11 +37,20 @@ defmodule Nibbler do
     for node <- Discovery.nodes(node_pattern) do
       Task.Supervisor.async(
         {Nibbler.Agent.TaskSupervisor, node},
-        Nibbler.Agent.SimpleLogger,
-        :start_link,
-        [capture_arguments]
+        Nibbler,
+        :callback_with_stream,
+        [agent_command, capture_arguments]
       )
     end
     {:ok, sup_pid}
+  end
+
+  def callback_with_stream(callback, capture_arguments) do
+    {:ok, pid} = GenEvent.start_link([])
+    GenEvent.add_handler(pid, Nibbler.Agent.PacketHandler, capture_arguments)
+    stream_callback = quote do
+      unquote(pid) |> GenEvent.stream |> unquote(callback).with_stream
+    end
+    Code.eval_quoted stream_callback
   end
 end
