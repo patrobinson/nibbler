@@ -2,7 +2,7 @@
 defmodule Nibbler.Agent.PacketHandler do
   use GenEvent
 
-  def handle_event({:packet, x}, packets) do
+  def handle_event(x, packets) do
     {:ok, [x | packets]}
   end
 
