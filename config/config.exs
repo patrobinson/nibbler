@@ -20,11 +20,12 @@ use Mix.Config
 #
 #     config :logger, level: :info
 #
-config :nibbler, mode: :agent
-config :nibbler, agent_command: Nibbler.Agent.SimpleLogger
+config :nibbler, mode: :master
+config :nibbler, agent_command: Nibbler.Agent.PcapDumper
 config :nibbler, heartbeat_check: "service:nibbler_agent"
 config :nibbler, heartbeat_ttl: 10000
 config :nibbler, pcap_file: "./output.pcap"
+config :nibbler, capture_arguments: [{"interface", ["en0"]}, {"timeout", 10000}] # Example
 
 # It is also possible to import configuration files, relative to this
 # directory. For example, you can emulate configuration per environment

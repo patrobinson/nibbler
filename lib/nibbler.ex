@@ -33,7 +33,7 @@ defmodule Nibbler do
     opts = [strategy: :one_for_one, name: Nibbler.Master.Supervisor]
     {:ok, sup_pid} = Supervisor.start_link(children, opts)
     Process.sleep(5000)
-    capture_arguments = [{"interface", ["en0"]}] # Example
+    capture_arguments = Application.get_env(:nibbler, :capture_arguments)
     for node <- Discovery.nodes(node_pattern) do
       Task.Supervisor.async(
         {Nibbler.Agent.TaskSupervisor, node},
